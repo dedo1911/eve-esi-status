@@ -20,6 +20,7 @@ import {
 
 function App() {
   const [showGreen, setShowGreen] = useState(true)
+  const [showYellow, setShowYellow] = useState(true)
   const [showRed, setShowRed] = useState(true)
   const { isLoading, error, data, dataUpdatedAt } = useQuery(
     'esiStatus',
@@ -43,8 +44,24 @@ function App() {
     { data && <Paper shadow='xl' p='md' m='lg'>
       <Text align='center'><strong>Total Endpoints:</strong> { data.length }</Text>
       <Group position='center' spacing='md'>
-        <Text align='center' color='red'><CircleCheck size={16} /> <strong>Online Endpoints:</strong> { data.filter(e => e.status === 'green').length }</Text>
-        <Text align='center' color='green'><AlertCircle size={16} /> <strong>Offline Endpoints:</strong> { data.filter(e => e.status === 'red').length }</Text>
+        {
+          data.filter(e => e.status === 'green').length > 0 &&
+            <Text align='center' color='green'>
+              <CircleCheck size={16} /> <strong>Online Endpoints:</strong> { data.filter(e => e.status === 'green').length }
+            </Text>
+        }
+        {
+          data.filter(e => e.status === 'yellow').length > 0 &&
+            <Text align='center' color='yellow'>
+              <AlertCircle size={16} /> <strong>Degraded Endpoints:</strong> { data.filter(e => e.status === 'yellow').length }
+            </Text>
+        }
+        {
+          data.filter(e => e.status === 'red').length > 0 &&
+            <Text align='center' color='red'>
+              <AlertCircle size={16} /> <strong>Offline Endpoints:</strong> { data.filter(e => e.status === 'red').length }
+            </Text>
+        }
       </Group>        
       <Text align='center' size='sm' color='dimmed'>Updated at: {new Date(dataUpdatedAt).toLocaleString()}</Text>
     </Paper> }
@@ -52,22 +69,27 @@ function App() {
       <Button color='green' variant={showGreen ? 'filled' : 'outline'} onClick={() => setShowGreen(!showGreen)}>
         Online
       </Button>
+      <Button color='yellow' variant={showYellow ? 'filled' : 'outline'} onClick={() => setShowYellow(!showYellow)}>
+        Degraded
+      </Button>
       <Button color='red' variant={showRed ? 'filled' : 'outline'} onClick={() => setShowRed(!showRed)}>
         Offline
       </Button>
     </Group>}
     { data && data.map((x, i) => {
-      let icon = <AlertTriangle size={16} />
-      let color = 'yellow'
+      let icon
+      const color  = x.status
       if (x.status === 'green') {
         if (!showGreen) return null
         icon = <CircleCheck size={16} />
-        color = 'green'
+      }
+      if (x.status === 'yellow') {
+        if (!showYellow) return null
+        icon = <AlertTriangle size={16} />
       }
       if (x.status === 'red') {
         if (!showRed) return null
         icon = <AlertCircle size={16} />
-        color = 'red'
       }
       return <Alert key={i} icon={icon} title={x.endpoint} color={color} m='sm'>
         <Text>{x.method.toUpperCase()} {x.route}</Text>
