@@ -19,7 +19,7 @@ import {
 } from 'tabler-icons-react'
 
 function App() {
-  const [showGreen, setShowGreen] = useState(true)
+  const [showGreen, setShowGreen] = useState(false)
   const [showYellow, setShowYellow] = useState(true)
   const [showRed, setShowRed] = useState(true)
   const { isLoading, error, data, dataUpdatedAt } = useQuery(
