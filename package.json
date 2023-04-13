@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@mantine/core": "^4.2.5",
-    "@mantine/hooks": "^4.2.5",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-query": "^3.39.0",
+    "@mantine/core": "6.0.7",
+    "@mantine/hooks": "6.0.7",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-query": "3.39.3",
     "react-scripts": "5.0.1",
-    "tabler-icons-react": "^1.48.0"
+    "tabler-icons-react": "1.56.0"
   },
   "scripts": {
     "start": "react-scripts start",
